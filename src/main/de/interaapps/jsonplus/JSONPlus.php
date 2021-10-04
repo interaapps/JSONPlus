@@ -37,8 +37,11 @@ class JSONPlus {
     }
 
     public function map($o, $type = null){
-        if ($type == null)
-            $type = get_class($o);
+        if ($type == null) {
+            $type = gettype($o);
+            if ($type == "object")
+                $type = get_class($type);
+        }
 
         foreach ($this->typeMapper as $typeName => $typeMapper) {
             if ($type == $typeName)
@@ -52,8 +55,11 @@ class JSONPlus {
     }
 
     public function mapToJson($o, $type = null){
-        if ($type == null)
-            $type = get_class($o);
+        if ($type == null) {
+            $type = gettype($o);
+            if ($type == "object")
+                $type = get_class($type);
+        }
         foreach ($this->typeMapper as $typeName => $typeMapper) {
             if ($type == $typeName)
                 return $typeMapper->mapToJson($o, $type);
