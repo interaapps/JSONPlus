@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "de\\interaapps\\ulole\\jsonplus\\": "src/main/de/interaapps/jsonplus"
+            "de\\interaapps\\jsonplus\\": "src/main/de/interaapps/jsonplus"
         }
     }
 }

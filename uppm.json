@@ -1,6 +1,6 @@
 {
     "name": "interaapps/jsonplus",
-    "version": "1.0",
+    "version": "1.0-pre",
     "phpVersion": ">8.0",
     "repositories": [],
     "run": {
@@ -11,6 +11,6 @@
     "modules": {
     },
     "namespaceBindings": {
-        "de\\interaapps\\ulole\\jsonplus": "src/main/de/interaapps/jsonplus"
+        "de\\interaapps\\jsonplus": "src/main/de/interaapps/jsonplus"
     }
 }
