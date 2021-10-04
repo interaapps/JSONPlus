@@ -1,5 +1,5 @@
 {
-    "name": "module",
+    "name": "interaapps/jsonplus",
     "version": "1.0",
     "phpVersion": ">8.0",
     "repositories": [],
