@@ -1,0 +1,16 @@
+{
+    "name": "module",
+    "version": "1.0",
+    "phpVersion": ">8.0",
+    "repositories": [],
+    "run": {
+        "test": "src\/test\/testbootstrap.php"
+    },
+    "build": {},
+    "serve": {},
+    "modules": {
+    },
+    "namespaceBindings": {
+        "de\\interaapps\\ulole\\jsonplus": "src/main/de/interaapps/jsonplus"
+    }
+}

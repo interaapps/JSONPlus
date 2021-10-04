@@ -1,0 +1,9 @@
+{
+    "namespaceBindings": {
+        "de\\interaapps\\ulole\\module": ".\/src\/main\/de\/interaapps\/ulole\/module"
+    },
+    "directNamespaceBindings": {},
+    "modules": {
+        "module": "1.0"
+    }
+}
