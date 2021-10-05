@@ -43,10 +43,10 @@ const JSON = '{
     "aeef2": {"test": true},
     "test": false,
     "feef": 21,
-    "aeef": [1,2,3],
+    "aeef": ["1","2","3"],
     "test2": "a"
 }';
 
 //echo Test::fromJson(JSON)->toJson();
 $json = new JSONPlus(new JsonSerializationAdapter());
-var_dump($json->fromJson(JSON, Test::class));
+echo $json->toJson($json->fromJson(JSON, Test::class));
