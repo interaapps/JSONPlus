@@ -6,7 +6,7 @@
 <?php
 
 use de\interaapps\jsonplus\attributes\Serialize;
-use de\interaapps\jsonplus\JSONModel;use de\interaapps\jsonplus\JSONPlus;
+use de\interaapps\jsonplus\JSONModel;use de\interaapps\jsonplus\JSONPlus;use de\interaapps\jsonplus\serializationadapter\impl\JsonSerializationAdapter;use de\interaapps\jsonplus\serializationadapter\impl\phpjson\PHPJsonSerializationAdapter;
 
 class Test2 {
     use JSONModel;
@@ -48,6 +48,12 @@ echo $jsonPlus->fromJson($arrJson)[0];
 Test::setJsonPlusInstance($jsonPlus);
 // For all (Default instance)
 JSONPlus::$default = $jsonPlus;
+
+/// Using other JSON-Drivers
+// Uses PHPs default json_encode and json_decode methods
+$jsonPlus = new JSONPlus(new PHPJsonSerializationAdapter());
+// Uses an custom implementation of JSON. This will be automatically chosen by JSONPlus::createDefault when json_decode doesn't exist 
+$jsonPlus = new JSONPlus(new JsonSerializationAdapter());
 ```
 
 ## Installation

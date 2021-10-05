@@ -1,10 +1,12 @@
 <?php
 namespace de\interaapps\jsonplus;
 
+use de\interaapps\jsonplus\serializationadapter\impl\JsonSerializationAdapter;
 use de\interaapps\jsonplus\serializationadapter\impl\phpjson\PHPJsonSerializationAdapter;
 use de\interaapps\jsonplus\serializationadapter\SerializationAdapter;
 use de\interaapps\jsonplus\typemapper\ObjectTypeMapper;
 use de\interaapps\jsonplus\typemapper\PassThroughTypeMapper;
+use de\interaapps\jsonplus\typemapper\StdClassObjectTypeMapper;
 use de\interaapps\jsonplus\typemapper\TypeMapper;
 use ReflectionClass;
 
@@ -29,6 +31,8 @@ class JSONPlus {
             "bool" => $this->passThroughTypeMapper,
             "array" => $this->passThroughTypeMapper,
             "boolean" => $this->passThroughTypeMapper,
+            "NULL" => $this->passThroughTypeMapper,
+            "stdClass" => new StdClassObjectTypeMapper($this),
         ];
     }
 
@@ -39,8 +43,9 @@ class JSONPlus {
     public function map($o, $type = null){
         if ($type == null) {
             $type = gettype($o);
+
             if ($type == "object")
-                $type = get_class($type);
+                $type = get_class($o);
         }
 
         foreach ($this->typeMapper as $typeName => $typeMapper) {
@@ -58,7 +63,7 @@ class JSONPlus {
         if ($type == null) {
             $type = gettype($o);
             if ($type == "object")
-                $type = get_class($type);
+                $type = get_class($o);
         }
         foreach ($this->typeMapper as $typeName => $typeMapper) {
             if ($type == $typeName)
@@ -77,7 +82,7 @@ class JSONPlus {
     }
 
     public static function createDefault() : JSONPlus {
-        return new JSONPlus(new PHPJsonSerializationAdapter());
+        return new JSONPlus(function_exists("json_decode") ? new PHPJsonSerializationAdapter() : new JsonSerializationAdapter());
     }
 }
 JSONPlus::$default = JSONPlus::createDefault();

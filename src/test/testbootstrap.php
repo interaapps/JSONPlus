@@ -4,6 +4,7 @@
 use de\interaapps\jsonplus\attributes\Serialize;
 use de\interaapps\jsonplus\JSONModel;
 use de\interaapps\jsonplus\JSONPlus;
+use de\interaapps\jsonplus\serializationadapter\impl\JsonSerializationAdapter;
 
 chdir(".");;
 ini_set('display_errors', 1);
@@ -37,16 +38,15 @@ class Test {
 }
 
 const JSON = '{
-    "name_": "World!",
+    "name_":"Wo\"\nrld!\\\",
+    "aeef23": {},
+    "aeef2": {"test": true},
     "test": false,
     "feef": 21,
     "aeef": [1,2,3],
-    "aeef2": {},
-    "test2": {
-        "sheesh": "yeeeeeeeee"
-    }
+    "test2": "a"
 }';
 
-Test::setJsonPlusInstance(JSONPlus::createDefault()->setPrettyPrinting(true));
-
-echo Test::fromJson(JSON)->toJson();
+//echo Test::fromJson(JSON)->toJson();
+$json = new JSONPlus(new JsonSerializationAdapter());
+var_dump($json->fromJson(JSON, Test::class));
