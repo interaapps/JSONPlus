@@ -1,6 +1,6 @@
 {
     "name": "interaapps/jsonplus",
-    "version": "1.0-pre",
+    "version": "1.0.1",
     "phpVersion": ">8.0",
     "repositories": [],
     "run": {
