@@ -13,7 +13,10 @@ class ObjectTypeMapper implements TypeMapper {
     }
 
     public function map(mixed $o, string $type): mixed {
-        $class = new ReflectionClass($type);
+        if ($o === null)
+            return null;
+
+        $class = new ReflectionClass(str_replace("?", "", $type));
         $oo = $class->newInstance();
 
         foreach ($class->getProperties() as $property) {
@@ -36,7 +39,9 @@ class ObjectTypeMapper implements TypeMapper {
     }
 
     public function mapToJson(mixed $o, string $type): mixed {
-        $class = new ReflectionClass($type);
+        if ($o === null)
+            return null;
+        $class = new ReflectionClass(str_replace("?", "", $type));
         $oo = [];
         foreach ($class->getProperties() as $property) {
             if (!$property->isStatic()) {
