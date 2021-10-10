@@ -1,6 +1,7 @@
 <?php
 // Init
 
+use de\interaapps\jsonplus\attributes\ArrayType;
 use de\interaapps\jsonplus\attributes\Serialize;
 use de\interaapps\jsonplus\JSONModel;
 use de\interaapps\jsonplus\JSONPlus;
@@ -17,6 +18,7 @@ error_reporting(E_ALL);
 echo "Testing:\n";
 
 class Test2 {
+    #[Serialize("shush")]
     public string $sheesh;
 }
 
@@ -47,14 +49,38 @@ const JSON = '{
     "test": false,
     "feef": 21,
     "aeef": ["1","2","3"],
-    "test2": "a",
+    "test2": {"shush": "yay"},
     "aaaa": null,
     "aa": false
 }';
 
-//echo Test::fromJson(JSON)->toJson();
+echo Test::fromJson(JSON)->toJson();
 $json = new JSONPlus(new JsonSerializationAdapter());
 $var = $json->fromJson(JSON, Test::class);
 
 echo $var->name."\n";
 echo $json->toJson($var);
+
+
+class Test3 {
+    use JSONModel;
+
+    /**
+     * @var array<Test2>
+     */
+    #[ArrayType(Test2::class)]
+    public array $myArray;
+}
+$arr = $json->fromMappedArrayJson('[
+    {
+        "shush": "yipi"
+    },
+    {
+        "shush": "yipu"
+    }
+]', Test2::class);
+
+foreach ($arr as $val) {
+    echo $val->sheesh;
+}
+

@@ -2,58 +2,99 @@
 
 ## Getting started
 
+### JSONPlus instance
 ```php
 <?php
+use de\interaapps\jsonplus\JSONPlus;
+use de\interaapps\jsonplus\serializationadapter\impl\JsonSerializationAdapter;
+use de\interaapps\jsonplus\serializationadapter\impl\phpjson\PHPJsonSerializationAdapter;
 
-use de\interaapps\jsonplus\attributes\Serialize;
-use de\interaapps\jsonplus\JSONModel;use de\interaapps\jsonplus\JSONPlus;use de\interaapps\jsonplus\serializationadapter\impl\JsonSerializationAdapter;use de\interaapps\jsonplus\serializationadapter\impl\phpjson\PHPJsonSerializationAdapter;
-
-class Test2 {
-    use JSONModel;
-    
-    #[Serialize("my_array")]
-    public array $myArray;
-}
-
-class Test {
-    // Adds the Test#toJson and Test::fromJson functions
-    use JSONModel;
-    
-    public string $test;
-    public Test2 $test2;
-}
-
-$test = Test::fromJson('{
-    "test": "Hello World",
-    "test2": {
-        "my_array": ["Hello There"]
-    }
-}');
-
-echo $test->toJson();
-
-// Custom JSONPlus Instance
 $jsonPlus = JSONPlus::createDefault();
-// $jsonPlus = new JSONPlus(new PHPJsonSerializationAdapter());
-$arrJson =  $jsonPlus->toJson([
-    "A", "B", "C"
-]);
-echo $arrJson;
-// '["A", "B", "C"]'
+$obj = $jsonPlus->fromJson('{"obj": "hello world"}');
+echo $obj->string; // -> hello world
 
-echo $jsonPlus->fromJson($arrJson)[0];
-// "A"
+// Enabling pretty printing
+$jsonPlus->setPrettyPrinting(true);
 
-// Setting JSONModal
-Test::setJsonPlusInstance($jsonPlus);
-// For all (Default instance)
-JSONPlus::$default = $jsonPlus;
+echo $jsonPlus->toJson($obj); // -> {"obj": "hello world"}
 
-/// Using other JSON-Drivers
-// Uses PHPs default json_encode and json_decode methods
+/// Other drivers
+// Default if json_decode exists in JSONPlus::createDefault()
 $jsonPlus = new JSONPlus(new PHPJsonSerializationAdapter());
-// Uses an custom implementation of JSON. This will be automatically chosen by JSONPlus::createDefault when json_decode doesn't exist 
+// Custom JSON implementation
 $jsonPlus = new JSONPlus(new JsonSerializationAdapter());
+```
+
+### Model
+```php
+<?php
+use de\interaapps\jsonplus\JSONPlus;
+use de\interaapps\jsonplus\JSONModel;
+use de\interaapps\jsonplus\attributes\Serialize;
+use de\interaapps\jsonplus\attributes\ArrayType;
+
+class Organisation {
+    public string $name;
+}
+
+class User {
+    use JSONModel;
+    
+    public int id;
+    
+    #[Serialize("firstName")]
+    public string firstName;
+    
+    #[Serialize(hidden: true)]
+    public string password;
+    
+    public ?Organisation $organisation;
+    
+    // Set Type for array:
+    #[ArrayType(User::class)]
+    public array $friends;
+}
+
+$json = '{
+    "id": 12343,
+    "first_name": "Jeff",
+    "organisation": {
+        "name": "InteraApps"
+    },
+    "friends": [
+        {
+            "id": 3245,
+            "first_name": "John",
+            "friends": []
+        }
+    ]
+}';
+
+// Decoding the JSON
+$user = User::fromJson($json);
+
+echo "Hello. My name is ".$user->first_name.", I have the ID ".$user->id
+    ."and I'm in the organisation ".$user->organisation->name."\n";
+
+foreach ($user->friends as $friend) {
+    echo "One of my friends: ".$friend->name."\n";
+}
+
+// Encoding to JSON
+echo $user->toJson();
+
+// Decode typed JSON-array
+$jsonPlus = JSONPlus::createDefault();
+$users = $jsonPlus->fromMappedArrayJson('[...]', User::class);
+foreach ($users as $user) {}
+```
+`Tip`: If you are using PHPStorm or any other intelligent IDE you might add PHP-Docs to some fields.
+
+For Typed Arrays:
+```php
+/** 
+* @var array<User> 
+*/
 ```
 
 ## Installation

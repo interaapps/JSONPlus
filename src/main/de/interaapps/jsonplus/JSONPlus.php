@@ -4,6 +4,7 @@ namespace de\interaapps\jsonplus;
 use de\interaapps\jsonplus\serializationadapter\impl\JsonSerializationAdapter;
 use de\interaapps\jsonplus\serializationadapter\impl\phpjson\PHPJsonSerializationAdapter;
 use de\interaapps\jsonplus\serializationadapter\SerializationAdapter;
+use de\interaapps\jsonplus\typemapper\ArrayTypeMapper;
 use de\interaapps\jsonplus\typemapper\ObjectTypeMapper;
 use de\interaapps\jsonplus\typemapper\PassThroughTypeMapper;
 use de\interaapps\jsonplus\typemapper\StdClassObjectTypeMapper;
@@ -29,7 +30,7 @@ class JSONPlus {
             "int" => $this->passThroughTypeMapper,
             "double" => $this->passThroughTypeMapper,
             "bool" => $this->passThroughTypeMapper,
-            "array" => $this->passThroughTypeMapper,
+            "array" => new ArrayTypeMapper($this),
             "boolean" => $this->passThroughTypeMapper,
             "NULL" => $this->passThroughTypeMapper,
             "stdClass" => new StdClassObjectTypeMapper($this),
@@ -44,6 +45,28 @@ class JSONPlus {
      * */
     public function fromJson(string $json, string|null $type = null){
         return $this->map($this->serializationAdapter->fromJson($json), $type);
+    }
+
+    /**
+     * @template T
+     * @param string $json The input json
+     * @param class-string<T> $type A class (className::class), type (example: "array", "int"...) or null (Detects type automatically)
+     * @return array<T>
+     * */
+    public function fromMappedArrayJson(string $json, string $type) : array {
+        return $this->mapTypedArray($this->serializationAdapter->fromJson($json), $type);
+    }
+    /**
+     * @template T
+     * @param array $arr
+     * @param class-string<T> $type A class (className::class), type (example: "array", "int"...) or null (Detects type automatically)
+     * @return array<T>
+     * */
+    public function mapTypedArray(array $arr, string $type) : array {
+        $out = [];
+        foreach ($arr as $i=>$v)
+            $out[$i] = $this->map($v, $type);
+        return $out;
     }
 
     /**
