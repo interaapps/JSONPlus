@@ -49,4 +49,6 @@ const JSON = '{
 
 //echo Test::fromJson(JSON)->toJson();
 $json = new JSONPlus(new JsonSerializationAdapter());
-echo $json->toJson($json->fromJson(JSON, Test::class));
+$var = $json->fromJson(JSON, Test::class);
+echo $var->test."\n";
+echo $json->toJson($var);

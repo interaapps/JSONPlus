@@ -36,11 +36,23 @@ class JSONPlus {
         ];
     }
 
-    public function fromJson($json, $type=null){
+    /**
+     * @template T
+     * @param string $json The input json
+     * @param null|class-string<T> $type A class (className::class), type (example: "array", "int"...) or null (Detects type automatically)
+     * @return T
+     * */
+    public function fromJson(string $json, string|null $type = null){
         return $this->map($this->serializationAdapter->fromJson($json), $type);
     }
 
-    public function map($o, $type = null){
+    /**
+     * @template T
+     * @param $o
+     * @param null|class-string<T> $type $type A class (className::class), type (example: "array", "int"...) or null (Detects type automatically)
+     * @return T
+     * */
+    public function map($o, null|string $type = null){
         if ($type == null) {
             $type = gettype($o);
 
