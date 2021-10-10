@@ -112,10 +112,13 @@ class JSONDecoder {
     }
 
     private function primitiveStringToPHP($p){
+        $p = trim($p);
         if ($p == "false")
             return false;
-        if ($p == "true")
+        else if ($p == "true")
             return true;
+        else if ($p == "null")
+            return null;
         return (double) $p;
     }
 

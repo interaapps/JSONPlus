@@ -29,6 +29,8 @@ class Test {
     public array $aeef;
     public object $aeef2;
     public Test2 $test2;
+    public $aaaa;
+    public $aa;
     public function __construct(){
     }
 
@@ -45,11 +47,14 @@ const JSON = '{
     "test": false,
     "feef": 21,
     "aeef": ["1","2","3"],
-    "test2": "a"
+    "test2": "a",
+    "aaaa": null,
+    "aa": false
 }';
 
 //echo Test::fromJson(JSON)->toJson();
-$json = new JSONPlus(new PHPJsonSerializationAdapter());
+$json = new JSONPlus(new JsonSerializationAdapter());
 $var = $json->fromJson(JSON, Test::class);
+
 echo $var->name."\n";
 echo $json->toJson($var);
