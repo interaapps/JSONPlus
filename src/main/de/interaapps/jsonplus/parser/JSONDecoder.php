@@ -93,6 +93,14 @@ class JSONDecoder {
         for (; $this->i<strlen($this->json); $this->i++) {
             $char = $this->get();
 
+            foreach (['"'=>'"', "\\"=>"\\", "n"=>"\n", "r"=>"\r", "f"=>"\f", "t"=>"\t", "v"=>"\v", "/"=>"/"] as $k=>$v) {
+                if ($char == "\\" && $this->get(1) == $k) {
+                    $char = $v;
+                    $this->i++;
+                    break;
+                }
+            }
+
             if ($char == '"' && ($this->get(-1) != "\\" || $this->get(-2) == "\\")) {
                 if ($this->get(-1) && $this->get(-2) != "\\")
                     $this->i++;

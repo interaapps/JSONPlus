@@ -5,6 +5,7 @@ use de\interaapps\jsonplus\attributes\Serialize;
 use de\interaapps\jsonplus\JSONModel;
 use de\interaapps\jsonplus\JSONPlus;
 use de\interaapps\jsonplus\serializationadapter\impl\JsonSerializationAdapter;
+use de\interaapps\jsonplus\serializationadapter\impl\phpjson\PHPJsonSerializationAdapter;
 
 chdir(".");;
 ini_set('display_errors', 1);
@@ -38,7 +39,7 @@ class Test {
 }
 
 const JSON = '{
-    "name_":"Wo\"\nrld!\\\",
+    "name_":"Wo\"\nrld!\\\ /",
     "aeef23": {},
     "aeef2": {"test": true},
     "test": false,
@@ -48,7 +49,7 @@ const JSON = '{
 }';
 
 //echo Test::fromJson(JSON)->toJson();
-$json = new JSONPlus(new JsonSerializationAdapter());
+$json = new JSONPlus(new PHPJsonSerializationAdapter());
 $var = $json->fromJson(JSON, Test::class);
-echo $var->test."\n";
+echo $var->name."\n";
 echo $json->toJson($var);

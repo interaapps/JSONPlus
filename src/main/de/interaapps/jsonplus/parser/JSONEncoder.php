@@ -36,8 +36,13 @@ class JSONEncoder {
     private function escapeString($str) : string {
         return
             str_replace("\n", "\\n",
+            str_replace("\r", "\\r",
+            str_replace("\t", "\\t",
+            str_replace("/", "\\/",
+            str_replace("\f", "\\f",
+            str_replace("\v", "\\v",
                 str_replace('"', '\"',
-                    str_replace("\\","\\\\", $str)));
+                    str_replace("\\","\\\\", $str))))))));
     }
 
     public function setPrettyPrint(bool $prettyPrint): JSONEncoder {
