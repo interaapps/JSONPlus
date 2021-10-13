@@ -10,8 +10,8 @@ use de\interaapps\jsonplus\serializationadapter\impl\JsonSerializationAdapter;
 use de\interaapps\jsonplus\serializationadapter\impl\phpjson\PHPJsonSerializationAdapter;
 
 $jsonPlus = JSONPlus::createDefault();
-$obj = $jsonPlus->fromJson('{"obj": "hello world"}');
-echo $obj->string; // -> hello world
+$obj = $jsonPlus->fromJson('{"test": "hello world"}');
+echo $obj->test; // -> hello world
 
 // Enabling pretty printing
 $jsonPlus->setPrettyPrinting(true);
@@ -42,7 +42,7 @@ class User {
     
     public int id;
     
-    #[Serialize("firstName")]
+    #[Serialize("first_name")]
     public string firstName;
     
     #[Serialize(hidden: true)]
