@@ -28,6 +28,7 @@ class JSONPlus {
             "string" => $this->passThroughTypeMapper,
             "float" => $this->passThroughTypeMapper,
             "int" => $this->passThroughTypeMapper,
+            "integer" => $this->passThroughTypeMapper,
             "double" => $this->passThroughTypeMapper,
             "bool" => $this->passThroughTypeMapper,
             "array" => new ArrayTypeMapper($this),

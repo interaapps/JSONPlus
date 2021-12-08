@@ -83,4 +83,3 @@ $arr = $json->fromMappedArrayJson('[
 foreach ($arr as $val) {
     echo $val->sheesh;
 }
-
