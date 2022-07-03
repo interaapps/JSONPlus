@@ -5,6 +5,7 @@ use de\interaapps\jsonplus\serializationadapter\impl\JsonSerializationAdapter;
 use de\interaapps\jsonplus\serializationadapter\impl\phpjson\PHPJsonSerializationAdapter;
 use de\interaapps\jsonplus\serializationadapter\SerializationAdapter;
 use de\interaapps\jsonplus\typemapper\ArrayTypeMapper;
+use de\interaapps\jsonplus\typemapper\EnumTypeMapper;
 use de\interaapps\jsonplus\typemapper\ObjectTypeMapper;
 use de\interaapps\jsonplus\typemapper\PassThroughTypeMapper;
 use de\interaapps\jsonplus\typemapper\StdClassObjectTypeMapper;
@@ -21,7 +22,7 @@ class JSONPlus {
     public function __construct(
         private SerializationAdapter $serializationAdapter
     ){
-        $this->defaultTypeMapper = new ObjectTypeMapper($this);
+        $this->defaultTypeMapper = new ObjectTypeMapper($this, new EnumTypeMapper());
         $this->passThroughTypeMapper = new PassThroughTypeMapper();
         $this->typeMapper = [
             "object" => $this->passThroughTypeMapper,

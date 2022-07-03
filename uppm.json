@@ -1,7 +1,7 @@
 {
     "name": "interaapps/jsonplus",
-    "version": "1.0.4",
-    "phpVersion": ">8.0",
+    "version": "1.0.5",
+    "phpVersion": ">8.1",
     "repositories": [],
     "run": {
         "test": "src\/test\/testbootstrap.php"

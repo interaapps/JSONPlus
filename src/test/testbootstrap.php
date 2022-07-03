@@ -22,6 +22,13 @@ class Test2 {
     public string $sheesh;
 }
 
+
+
+enum MyEnum {
+    case HEY;
+    case WORLD;
+}
+
 class Test {
     use JSONModel;
     #[Serialize("name_")]
@@ -33,6 +40,9 @@ class Test {
     public Test2 $test2;
     public $aaaa;
     public $aa;
+
+    public ?MyEnum $myEnum = null;
+
     public function __construct(){
     }
 
@@ -57,7 +67,7 @@ const JSON = '{
 echo Test::fromJson(JSON)->toJson();
 $json = new JSONPlus(new JsonSerializationAdapter());
 $var = $json->fromJson(JSON, Test::class);
-
+echo $var->myEnum;
 echo $var->name."\n";
 echo $json->toJson($var);
 
@@ -79,6 +89,8 @@ $arr = $json->fromMappedArrayJson('[
         "shush": "yipu"
     }
 ]', Test2::class);
+
+
 
 foreach ($arr as $val) {
     echo $val->sheesh;

@@ -9,7 +9,8 @@ use ReflectionClass;
 
 class ObjectTypeMapper implements TypeMapper {
     public function __construct(
-        private JSONPlus $jsonPlus
+        private JSONPlus $jsonPlus,
+        private EnumTypeMapper $enumTypeMapper
     ){
     }
 
@@ -18,6 +19,10 @@ class ObjectTypeMapper implements TypeMapper {
             return null;
 
         $class = new ReflectionClass(str_replace("?", "", $type));
+        if ($class->isEnum()) {
+            return $this->enumTypeMapper->map($class, $o);
+        }
+
         $oo = $class->newInstance();
 
         foreach ($class->getProperties() as $property) {
@@ -53,6 +58,11 @@ class ObjectTypeMapper implements TypeMapper {
         if ($o === null)
             return null;
         $class = new ReflectionClass(str_replace("?", "", $type));
+
+        if ($class->isEnum()) {
+            return $this->enumTypeMapper->mapToJson($class, $o);
+        }
+
         $oo = [];
         foreach ($class->getProperties() as $property) {
             if (!$property->isStatic()) {
@@ -60,6 +70,7 @@ class ObjectTypeMapper implements TypeMapper {
 
                 $overrideName = $property?->getName();
                 $serializeAttribs = $property->getAttributes(Serialize::class);
+
                 foreach ($serializeAttribs as $attrib) {
                     $attrib = $attrib->newInstance();
                     $overrideName = $attrib->value;

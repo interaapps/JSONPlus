@@ -37,22 +37,29 @@ class Organisation {
     public string $name;
 }
 
+enum UserType {
+    case ADMIN;
+    case MEMBER;
+}
+
 class User {
     use JSONModel;
     
-    public int id;
+    public int $id;
     
     #[Serialize("first_name")]
-    public string firstName;
+    public string $firstName;
     
     #[Serialize(hidden: true)]
-    public string password;
+    public string $password;
     
     public ?Organisation $organisation;
     
     // Set Type for array:
     #[ArrayType(User::class)]
     public array $friends;
+    
+    public UserType $type = UserType::MEMBER;
 }
 
 $json = '{
@@ -67,7 +74,8 @@ $json = '{
             "first_name": "John",
             "friends": []
         }
-    ]
+    ],
+    "type": "USER"
 }';
 
 // Decoding the JSON
@@ -95,6 +103,7 @@ For Typed Arrays:
 /** 
 * @var array<User> 
 */
+private array $myArray;
 ```
 
 ## Installation

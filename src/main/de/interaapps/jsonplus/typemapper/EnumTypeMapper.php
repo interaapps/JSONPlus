@@ -2,13 +2,18 @@
 
 namespace de\interaapps\jsonplus\typemapper;
 
-class EnumTypeMapper implements TypeMapper {
+class EnumTypeMapper {
 
-    public function map(mixed $o, string $type): mixed {
-        return $type::{$o}->value;
+    public function map(\ReflectionClass $enum, string $name): mixed {
+        foreach ($enum->getMethod("cases")->invoke(null) as $entry) {
+            if ($entry->name == $name)
+                return $entry;
+        }
+
+        return null;
     }
 
-    public function mapToJson(mixed $o, string $type): mixed {
-        return $o->name;
+    public function mapToJson(\ReflectionClass $enum, mixed $type): mixed {
+        return $type->name;
     }
 }
