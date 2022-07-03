@@ -75,7 +75,7 @@ $json = '{
             "friends": []
         }
     ],
-    "type": "USER"
+    "type": "MEMBER"
 }';
 
 // Decoding the JSON
