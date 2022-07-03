@@ -103,6 +103,7 @@ For Typed Arrays:
 /** 
 * @var array<User> 
 */
+#[ArrayType(User::class)]
 private array $myArray;
 ```
 
