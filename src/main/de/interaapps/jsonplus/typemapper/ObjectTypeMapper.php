@@ -27,7 +27,7 @@ class ObjectTypeMapper implements TypeMapper {
 
         foreach ($class->getProperties() as $property) {
             if (!$property->isStatic()) {
-                $name = $property?->getName();
+                $name = $property->getName();
                 $serializeAttribs = $property->getAttributes(Serialize::class);
                 foreach ($serializeAttribs as $attrib) {
                     $attrib = $attrib->newInstance();
@@ -46,7 +46,7 @@ class ObjectTypeMapper implements TypeMapper {
                         }
                     }
 
-                    $property->setValue($oo, $this->jsonPlus->map($o?->{$name}, strval($property->getType())));
+                    $property->setValue($oo, $this->jsonPlus->map($o?->{$name}, strval($property->getType()?->getName())));
                 }
             }
         }

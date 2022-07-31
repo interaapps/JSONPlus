@@ -6,7 +6,6 @@ use de\interaapps\jsonplus\attributes\Serialize;
 use de\interaapps\jsonplus\JSONModel;
 use de\interaapps\jsonplus\JSONPlus;
 use de\interaapps\jsonplus\serializationadapter\impl\JsonSerializationAdapter;
-use de\interaapps\jsonplus\serializationadapter\impl\phpjson\PHPJsonSerializationAdapter;
 
 chdir(".");;
 ini_set('display_errors', 1);
@@ -33,10 +32,11 @@ class Test {
     use JSONModel;
     #[Serialize("name_")]
     public string $name = "NOT INITIALIZED";
+
     public bool $test;
     public int $feef;
     public array $aeef;
-    public object $aeef2;
+    public ?object $aeef2;
     public Test2 $test2;
     public $aaaa;
     public $aa;
@@ -64,7 +64,7 @@ const JSON = '{
     "aa": false
 }';
 
-echo Test::fromJson(JSON)->toJson();
+echo "Hello ".Test::fromJson(JSON)->toJson();
 $json = new JSONPlus(new JsonSerializationAdapter());
 $var = $json->fromJson(JSON, Test::class);
 echo $var->myEnum;
@@ -81,6 +81,7 @@ class Test3 {
     #[ArrayType(Test2::class)]
     public array $myArray;
 }
+
 $arr = $json->fromMappedArrayJson('[
     {
         "shush": "yipi"
@@ -90,8 +91,10 @@ $arr = $json->fromMappedArrayJson('[
     }
 ]', Test2::class);
 
-
-
 foreach ($arr as $val) {
     echo $val->sheesh;
 }
+
+
+echo "\n\n";
+var_dump($json->toJson((object)["test" => 314]));

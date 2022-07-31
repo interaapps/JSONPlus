@@ -10,7 +10,6 @@ use de\interaapps\jsonplus\typemapper\ObjectTypeMapper;
 use de\interaapps\jsonplus\typemapper\PassThroughTypeMapper;
 use de\interaapps\jsonplus\typemapper\StdClassObjectTypeMapper;
 use de\interaapps\jsonplus\typemapper\TypeMapper;
-use ReflectionClass;
 
 class JSONPlus {
     private bool $prettyPrinting = false;
@@ -53,7 +52,7 @@ class JSONPlus {
      * @template T
      * @param string $json The input json
      * @param class-string<T> $type A class (className::class), type (example: "array", "int"...) or null (Detects type automatically)
-     * @return array<T>
+     * @return T[]
      * */
     public function fromMappedArrayJson(string $json, string $type) : array {
         return $this->mapTypedArray($this->serializationAdapter->fromJson($json), $type);
@@ -62,7 +61,7 @@ class JSONPlus {
      * @template T
      * @param array $arr
      * @param class-string<T> $type A class (className::class), type (example: "array", "int"...) or null (Detects type automatically)
-     * @return array<T>
+     * @return T[]
      * */
     public function mapTypedArray(array $arr, string $type) : array {
         $out = [];
